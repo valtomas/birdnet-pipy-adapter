@@ -1,0 +1,3 @@
+# Pin loosely; this add-on only needs a small, portable stack.
+flask>=3.0
+requests>=2.31

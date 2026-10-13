@@ -1,0 +1,32 @@
+{
+  "name": "BirdNET-PiPy Adapter",
+  "version": "1.0.0",
+  "slug": "birdnet-pipy-adapter",
+  "description": "Translates BirdNET-PiPy data into the Bird Card (HABirdDashboard) BirdNET-Go API shape.",
+  "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
+  "startup": "before",
+  "boot": "auto",
+  "panel_icon": "audio-video",
+  "ingress": true,
+  "ingress_port": 8080,
+  "ports": {
+    "8080/tcp": 8099
+  },
+  "ports_description": {
+    "8080/tcp": "Adapter API (LAN)"
+  },
+  "homeassistant": ">=2024.1.0",
+  "options": {
+    "birdnet_host": "192.168.86.30",
+    "birdnet_port": 80,
+    "cache_ttl": 30,
+    "http_timeout": 15
+  },
+  "schema": {
+    "birdnet_host": "str",
+    "birdnet_port": "int",
+    "cache_ttl": "int",
+    "http_timeout": "int",
+    "log_level": "str|list"
+  }
+}
