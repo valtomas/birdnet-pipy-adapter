@@ -37,16 +37,21 @@ See [`docs/README.md`](docs/README.md) for full install + card configuration.
 2. Find **BirdNET-PiPy Adapter** → **Install** → **Start**.
 3. In the add-on **Settings**, confirm `birdnet_host` is your BirdNET-PiPy Pi
    (default `192.168.86.30`). **Save**.
-4. In the **Bird Card** editor → **Connection & data** → **BirdNET-Go URL**
-   (`birdnet_url`): `http://<HA-HOST-IP>:8099`
+4. In the **Bird Card** editor → **Connection & data**:
+   - Leave **BirdNET-Go URL** (`birdnet_url`) **blank**. The card connects via
+     Home Assistant ingress, which works on your home LAN *and* remotely through
+     Nabu Casa — this is the recommended setup.
+   - (Optional) To use the raw port instead, set it to
+     `http://<HA-HOST-IP>:8099` — this only works while you are on the home LAN.
 
 ## Notes
 
 - **Public repo required** — HA fetches add-on metadata anonymously, so the repo
   cannot be private.
-- **Home LAN primary.** The card reaches the add-on via its LAN port (`:8099`).
-  For remote (Nabu Casa) viewing, expose that port or point `birdnet_url` at the
-  add-on's ingress URL (admin users).
+- **Ingress (recommended).** The card reaches the add-on via Home Assistant
+  ingress (leave `birdnet_url` blank), so it works both on your home LAN and
+  remotely through Nabu Casa — no port exposure needed. A raw `http://<host>:8099`
+  URL also works, but only while you are on the home LAN.
 - **Counts** come from BirdNET-PiPy per-species totals; 7-day counts are
   detections within that window.
 
@@ -54,8 +59,8 @@ See [`docs/README.md`](docs/README.md) for full install + card configuration.
 
 ```
 config.json        # add-on manifest + settings
-build.json         # build context = rootfs/
-Dockerfile         # python:3.12-slim
+build.json         # build options (build_from/squash/args/labels)
+Dockerfile         # python:3.12-slim + app (build context = repo root)
 rootfs/app.py      # the adapter
 rootfs/requirements.txt
 docs/README.md     # detailed install + card config

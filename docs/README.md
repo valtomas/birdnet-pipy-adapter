@@ -18,8 +18,8 @@ browser -> Bird Card -> this add-on (birdnet_url) -> BirdNET-PiPy (:80 on LAN)
 ```
 birdnet-pipy-adapter/
 ├── config.json        # add-on manifest + settings
-├── build.json         # build context = rootfs/
-├── Dockerfile         # python:3.12-slim + app
+├── build.json         # build options (build_from/squash/args/labels)
+├── Dockerfile         # python:3.12-slim + app (build context = repo root)
 ├── rootfs/
 │   ├── app.py         # the adapter
 │   └── requirements.txt
@@ -43,15 +43,25 @@ birdnet-pipy-adapter/
 
 ## Configure the Bird Card
 
-In the card's visual editor (**Connection & data**) set:
+In the card's visual editor (**Connection & data**) there are two working
+options. **Option A is recommended.**
 
-- **BirdNET-Go URL** (`birdnet_url`): `http://<HA-HOST-IP>:8099`
-  (the port mapped in `config.json` — `8080/tcp: 8099`).
-  e.g. `http://192.168.86.50:8099`.
+### A. Via Home Assistant ingress (recommended)
 
-Leave everything else as you like. The card will pull its collage species,
-counts, hourly buckets, recordings, and audio from BirdNET-PiPy through the
-adapter.
+Leave **BirdNET-Go URL** (`birdnet_url`) **blank**. The card then connects
+through Home Assistant ingress — which works whether you are on your home LAN or
+remotely via Nabu Casa, with no port exposure required.
+
+That's all — the card will pull its collage species, counts, hourly buckets,
+recordings, and audio from BirdNET-PiPy through the adapter.
+
+### B. Via the raw LAN port
+
+Set **BirdNET-Go URL** (`birdnet_url`) to `http://<HA-HOST-IP>:8099`
+(the port mapped in `config.json` — `8080/tcp: 8099`; e.g.
+`http://192.168.86.50:8099`). This only works while you are on the home LAN,
+because the browser reaches the private port directly; it will not work over
+Nabu Casa.
 
 ### Weather
 The card reads Home Assistant's weather integration directly when a
@@ -87,11 +97,11 @@ weather entity or skip it.
 
 ## Notes & limitations
 
-- **Home LAN primary.** The card reaches the add-on via its LAN port
-  (`:8099`). That works on your home network. For **away-from-home** viewing
-  over Nabu Casa, the browser also needs to reach that port — either expose it
-  securely, or point `birdnet_url` at the add-on's **ingress** URL (admin users)
-  once ingress is enabled. The adapter already serves cleanly under ingress.
+- **Ingress is the default path.** The card reaches the add-on via Home Assistant
+  ingress when `birdnet_url` is left blank, so it works on your home LAN and
+  remotely (Nubu Casa) with nothing exposed. A raw `http://<host>:8099` URL works
+  too, but only on the home LAN. The adapter serves cleanly under ingress, and
+  sends CORS headers so the LAN-port path works as well.
 - **Counts.** The ALL/life-list count comes from BirdNET-PiPy per-species
   totals; 7-day counts are detections within that window.
 - **Cached.** Aggregates are cached for `cache_ttl` seconds (matching the card's
