@@ -27,6 +27,6 @@
     "birdnet_port": "int",
     "cache_ttl": "int",
     "http_timeout": "int",
-    "log_level": "str|list"
+    "log_level": "str"
   }
 }
