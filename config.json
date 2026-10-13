@@ -20,7 +20,8 @@
     "birdnet_host": "192.168.86.30",
     "birdnet_port": 80,
     "cache_ttl": 30,
-    "http_timeout": 15
+    "http_timeout": 15,
+    "log_level": "info"
   },
   "schema": {
     "birdnet_host": "str",
