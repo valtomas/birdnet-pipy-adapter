@@ -1,4 +1,4 @@
 name: BirdNET-PiPy Adapter
 description: Translates BirdNET-PiPy's API into the BirdNET-Go v2 shape the HABirdDashboard Bird Card expects. Runs as a Home Assistant add-on on the HA host and proxies to BirdNET-PiPy over the LAN.
-url: "https://github.com/valtas/birdnet-pipy-adapter"
-maintainer: "Tomas Val <github.com/valtas>"
+url: "https://github.com/valtomas/birdnet-pipy-adapter"
+maintainer: "Tomas Val <https://github.com/valtomas/birdnet-pipy-adapter>"
